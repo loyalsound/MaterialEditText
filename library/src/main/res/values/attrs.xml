@@ -65,6 +65,8 @@
     <attr name="met_textColorHint" format="color" />
     <!-- Auto validate on focus lost. False by default. -->
     <attr name="met_validateOnFocusLost" format="boolean"/>
+    <!-- Clear validation error on focus gain. False by default. -->
+    <attr name="met_clearValidationErrorOnFocusGain" format="boolean"/>
     <!-- Whether check the characters count at the beginning it's shown. True by default. -->
     <attr name="met_checkCharactersCountAtBeginning" format="boolean"/>
 

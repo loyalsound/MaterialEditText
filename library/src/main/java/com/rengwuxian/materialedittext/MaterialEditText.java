@@ -293,6 +293,11 @@ public class MaterialEditText extends AppCompatEditText {
    */
   private boolean validateOnFocusLost;
 
+  /**
+   * Error is cleared when focus gained.
+   */
+  private boolean clearValidationErrorOnFocusGain;
+
   private boolean showClearButton;
   private boolean firstShown;
   private int iconSize;
@@ -414,6 +419,7 @@ public class MaterialEditText extends AppCompatEditText {
     floatingLabelAlwaysShown = typedArray.getBoolean(R.styleable.MaterialEditText_met_floatingLabelAlwaysShown, false);
     helperTextAlwaysShown = typedArray.getBoolean(R.styleable.MaterialEditText_met_helperTextAlwaysShown, false);
     validateOnFocusLost = typedArray.getBoolean(R.styleable.MaterialEditText_met_validateOnFocusLost, false);
+    clearValidationErrorOnFocusGain = typedArray.getBoolean(R.styleable.MaterialEditText_met_clearValidationErrorOnFocusGain, false);
     checkCharactersCountAtBeginning = typedArray.getBoolean(R.styleable.MaterialEditText_met_checkCharactersCountAtBeginning, true);
     typedArray.recycle();
 
@@ -902,6 +908,9 @@ public class MaterialEditText extends AppCompatEditText {
         if (validateOnFocusLost && !hasFocus) {
           validate();
         }
+        if (clearValidationErrorOnFocusGain && hasFocus) {
+          setError(null);
+        }
         if (outerFocusChangeListener != null) {
           outerFocusChangeListener.onFocusChange(v, hasFocus);
         }
@@ -916,6 +925,14 @@ public class MaterialEditText extends AppCompatEditText {
 
   public void setValidateOnFocusLost(boolean validate) {
     this.validateOnFocusLost = validate;
+  }
+
+  public boolean isClearValidationErrorOnFocusGain() {
+    return clearValidationErrorOnFocusGain;
+  }
+
+  public void setClearValidationErrorOnFocusGain(boolean clear) {
+    this.clearValidationErrorOnFocusGain = clear;
   }
 
   public void setBaseColor(int color) {
