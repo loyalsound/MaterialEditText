@@ -73,6 +73,8 @@
     <attr name="met_checkCharactersCountAtBeginning" format="boolean"/>
     <!-- Underline's color in focused state -->
     <attr name="met_focusUnderlineColor" format="color"/>
+    <!-- Underline's color in disabled state -->
+    <attr name="met_disabledUnderlineColor" format="color"/>
     <!-- Underline's color in error state -->
     <attr name="met_errorUnderlineColor" format="color"/>
     <!-- Underline height. 1dp by default -->
