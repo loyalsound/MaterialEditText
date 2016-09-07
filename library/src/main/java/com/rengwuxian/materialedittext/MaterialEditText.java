@@ -61,6 +61,11 @@ public class MaterialEditText extends AppCompatEditText {
   public static final int FLOATING_LABEL_HIGHLIGHT = 2;
 
   /**
+   * the value for no color
+   */
+  private static int NO_COLOR = Integer.MIN_VALUE;
+
+  /**
    * the spacing between the main text and the inner top padding.
    */
   private int extraPaddingTop;
@@ -208,7 +213,7 @@ public class MaterialEditText extends AppCompatEditText {
   /**
    * Helper text color
    */
-  private int helperTextColor = -1;
+  private int helperTextColor;
 
   /**
    * error text for manually invoked {@link #setError(CharSequence)}
@@ -254,6 +259,26 @@ public class MaterialEditText extends AppCompatEditText {
    * Underline's color
    */
   private int underlineColor;
+
+  /**
+   * Underline's color in focused state
+   */
+  private int focusUnderlineColor;
+
+  /**
+   * Underline's color in error state
+   */
+  private int errorUnderlineColor;
+
+  /**
+   * Underline's height
+   */
+  private int underlineHeight;
+
+  /**
+   * Underline's height in bold state
+   */
+  private int boldUnderlineHeight;
 
   /**
    * Whether to validate as soon as the text has changed. False by default
@@ -394,7 +419,7 @@ public class MaterialEditText extends AppCompatEditText {
     maxCharacters = typedArray.getInt(R.styleable.MaterialEditText_met_maxCharacters, 0);
     singleLineEllipsis = typedArray.getBoolean(R.styleable.MaterialEditText_met_singleLineEllipsis, false);
     helperText = typedArray.getString(R.styleable.MaterialEditText_met_helperText);
-    helperTextColor = typedArray.getColor(R.styleable.MaterialEditText_met_helperTextColor, -1);
+    helperTextColor = typedArray.getColor(R.styleable.MaterialEditText_met_helperTextColor, NO_COLOR);
     minBottomTextLines = typedArray.getInt(R.styleable.MaterialEditText_met_minBottomTextLines, 0);
     String fontPathForAccent = typedArray.getString(R.styleable.MaterialEditText_met_accentTypeface);
     if (fontPathForAccent != null && !isInEditMode()) {
@@ -412,11 +437,15 @@ public class MaterialEditText extends AppCompatEditText {
     }
     floatingLabelPadding = typedArray.getDimensionPixelSize(R.styleable.MaterialEditText_met_floatingLabelPadding, bottomSpacing);
     floatingLabelTextSize = typedArray.getDimensionPixelSize(R.styleable.MaterialEditText_met_floatingLabelTextSize, getResources().getDimensionPixelSize(R.dimen.floating_label_text_size));
-    floatingLabelTextColor = typedArray.getColor(R.styleable.MaterialEditText_met_floatingLabelTextColor, -1);
+    floatingLabelTextColor = typedArray.getColor(R.styleable.MaterialEditText_met_floatingLabelTextColor, NO_COLOR);
     floatingLabelAnimating = typedArray.getBoolean(R.styleable.MaterialEditText_met_floatingLabelAnimating, true);
     bottomTextSize = typedArray.getDimensionPixelSize(R.styleable.MaterialEditText_met_bottomTextSize, getResources().getDimensionPixelSize(R.dimen.bottom_text_size));
     hideUnderline = typedArray.getBoolean(R.styleable.MaterialEditText_met_hideUnderline, false);
-    underlineColor = typedArray.getColor(R.styleable.MaterialEditText_met_underlineColor, -1);
+    underlineColor = typedArray.getColor(R.styleable.MaterialEditText_met_underlineColor, NO_COLOR);
+    focusUnderlineColor = typedArray.getColor(R.styleable.MaterialEditText_met_focusUnderlineColor, NO_COLOR);
+    errorUnderlineColor = typedArray.getColor(R.styleable.MaterialEditText_met_errorUnderlineColor, NO_COLOR);
+    underlineHeight = typedArray.getDimensionPixelSize(R.styleable.MaterialEditText_met_underlineHeight, getResources().getDimensionPixelSize(R.dimen.default_underline_height));
+    boldUnderlineHeight = typedArray.getDimensionPixelSize(R.styleable.MaterialEditText_met_boldUnderlineHeight, getResources().getDimensionPixelSize(R.dimen.default_bold_underline_height));
     autoValidate = typedArray.getBoolean(R.styleable.MaterialEditText_met_autoValidate, false);
     iconLeftBitmaps = generateIconBitmaps(typedArray.getResourceId(R.styleable.MaterialEditText_met_iconLeft, -1));
     iconRightBitmaps = generateIconBitmaps(typedArray.getResourceId(R.styleable.MaterialEditText_met_iconRight, -1));
@@ -1343,20 +1372,20 @@ public class MaterialEditText extends AppCompatEditText {
     if (!hideUnderline) {
       lineStartY += bottomSpacing;
       if (!isInternalValid()) { // not valid
-        paint.setColor(errorColor);
-        canvas.drawRect(startX, lineStartY, endX, lineStartY + getPixel(2), paint);
+        paint.setColor(errorUnderlineColor != NO_COLOR ? errorUnderlineColor : errorColor);
+        canvas.drawRect(startX, lineStartY, endX, lineStartY + boldUnderlineHeight, paint);
       } else if (!isEnabled()) { // disabled
-        paint.setColor(underlineColor != -1 ? underlineColor : baseColor & 0x00ffffff | 0x44000000);
+        paint.setColor(underlineColor != NO_COLOR ? underlineColor : baseColor & 0x00ffffff | 0x44000000);
         float interval = getPixel(1);
         for (float xOffset = 0; xOffset < getWidth(); xOffset += interval * 3) {
-          canvas.drawRect(startX + xOffset, lineStartY, startX + xOffset + interval, lineStartY + getPixel(1), paint);
+          canvas.drawRect(startX + xOffset, lineStartY, startX + xOffset + interval, lineStartY + underlineHeight, paint);
         }
       } else if (hasFocus()) { // focused
-        paint.setColor(primaryColor);
-        canvas.drawRect(startX, lineStartY, endX, lineStartY + getPixel(2), paint);
+        paint.setColor(focusUnderlineColor != NO_COLOR ? focusUnderlineColor : primaryColor);
+        canvas.drawRect(startX, lineStartY, endX, lineStartY + boldUnderlineHeight, paint);
       } else { // normal
-        paint.setColor(underlineColor != -1 ? underlineColor : baseColor & 0x00ffffff | 0x1E000000);
-        canvas.drawRect(startX, lineStartY, endX, lineStartY + getPixel(1), paint);
+        paint.setColor(underlineColor != NO_COLOR ? underlineColor : baseColor & 0x00ffffff | 0x1E000000);
+        canvas.drawRect(startX, lineStartY, endX, lineStartY + underlineHeight, paint);
       }
     }
 
@@ -1375,7 +1404,7 @@ public class MaterialEditText extends AppCompatEditText {
     // draw the bottom text
     if (textLayout != null) {
       if (tempErrorText != null || ((helperTextAlwaysShown || hasFocus()) && !TextUtils.isEmpty(helperText))) { // error text or helper text
-        textPaint.setColor(tempErrorText != null ? errorColor : helperTextColor != -1 ? helperTextColor : (baseColor & 0x00ffffff | 0x44000000));
+        textPaint.setColor(tempErrorText != null ? errorColor : helperTextColor != NO_COLOR ? helperTextColor : (baseColor & 0x00ffffff | 0x44000000));
         canvas.save();
         if (isRTL()) {
           canvas.translate(endX - textLayout.getWidth(), lineStartY + bottomSpacing - bottomTextPadding);
@@ -1402,7 +1431,7 @@ public class MaterialEditText extends AppCompatEditText {
     if (floatingLabelEnabled && !TextUtils.isEmpty(floatingLabelText)) {
       textPaint.setTextSize(floatingLabelTextSize);
       // calculate the text color
-      Integer floatingLabelColor = (Integer) focusEvaluator.evaluate(focusFraction * (isEnabled() ? 1 : 0), floatingLabelTextColor != -1 ? floatingLabelTextColor : (baseColor & 0x00ffffff | 0x44000000), primaryColor);
+      Integer floatingLabelColor = (Integer) focusEvaluator.evaluate(focusFraction * (isEnabled() ? 1 : 0), floatingLabelTextColor != NO_COLOR ? floatingLabelTextColor : (baseColor & 0x00ffffff | 0x44000000), primaryColor);
       textPaint.setColor(tempErrorText != null ? errorColor : floatingLabelColor);
 
       // calculate the horizontal position
