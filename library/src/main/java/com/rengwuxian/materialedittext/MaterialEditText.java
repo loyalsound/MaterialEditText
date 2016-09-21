@@ -38,6 +38,7 @@ import com.nineoldandroids.animation.ArgbEvaluator;
 import com.nineoldandroids.animation.ObjectAnimator;
 import com.rengwuxian.materialedittext.validation.METLengthChecker;
 import com.rengwuxian.materialedittext.validation.METValidator;
+import com.rengwuxian.materialedittext.validation.MetTextPreprocessor;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -355,6 +356,7 @@ public class MaterialEditText extends AppCompatEditText {
   OnFocusChangeListener innerFocusChangeListener;
   OnFocusChangeListener outerFocusChangeListener;
   private List<METValidator> validators;
+  private MetTextPreprocessor preprocessor;
   private METLengthChecker lengthChecker;
 
   public MaterialEditText(Context context) {
@@ -1200,7 +1202,7 @@ public class MaterialEditText extends AppCompatEditText {
       return false;
     }
     Pattern pattern = Pattern.compile(regex);
-    Matcher matcher = pattern.matcher(getText());
+    Matcher matcher = pattern.matcher(getPreprocessedText());
     return matcher.matches();
   }
 
@@ -1227,7 +1229,7 @@ public class MaterialEditText extends AppCompatEditText {
    * @return True if valid, false if not
    */
   public boolean validateWith(@NonNull METValidator validator) {
-    CharSequence text = getText();
+    CharSequence text = getPreprocessedText();
     boolean isValid = validator.isValid(text, text.length() == 0);
     if (!isValid) {
       setError(validator.getErrorMessage());
@@ -1248,7 +1250,7 @@ public class MaterialEditText extends AppCompatEditText {
       return true;
     }
 
-    CharSequence text = getText();
+    CharSequence text = getPreprocessedText();
     boolean isEmpty = text.length() == 0;
 
     boolean isValid = true;
@@ -1301,6 +1303,18 @@ public class MaterialEditText extends AppCompatEditText {
 
   public void setLengthChecker(METLengthChecker lengthChecker) {
     this.lengthChecker = lengthChecker;
+  }
+
+  public void setTextPreprocessor(MetTextPreprocessor preprocessor) {
+    this.preprocessor = preprocessor;
+  }
+
+  public void clearTextPreprocessor() {
+    this.preprocessor = null;
+  }
+
+  public CharSequence getPreprocessedText() {
+    return preprocessor.transform(getText());
   }
 
   @Override
