@@ -1314,7 +1314,12 @@ public class MaterialEditText extends AppCompatEditText {
   }
 
   public String getPreprocessedText() {
-    return preprocessor.transform(getText());
+    String text = getText().toString();
+    if (preprocessor != null) {
+        return preprocessor.transform(text);
+    } else {
+        return text;
+    }
   }
 
   @Override
