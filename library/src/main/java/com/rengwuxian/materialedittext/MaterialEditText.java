@@ -1313,7 +1313,7 @@ public class MaterialEditText extends AppCompatEditText {
     this.preprocessor = null;
   }
 
-  public CharSequence getPreprocessedText() {
+  public String getPreprocessedText() {
     return preprocessor.transform(getText());
   }
 

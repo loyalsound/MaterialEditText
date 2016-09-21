@@ -7,5 +7,5 @@ import android.support.annotation.NonNull;
  */
 public abstract class MetTextPreprocessor {
 
-    public abstract CharSequence transform(@NonNull CharSequence text);
+    public abstract String transform(@NonNull CharSequence text);
 }
