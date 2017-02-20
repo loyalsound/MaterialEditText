@@ -744,6 +744,22 @@ public class MaterialEditText extends AppCompatEditText {
     postInvalidate();
   }
 
+  /**
+   * get the color of the underline for disabled state
+   */
+  public int getDisabledUnderlineColor() {
+    return disabledUnderlineColor;
+  }
+
+  /**
+   * Set the color of the underline for disabled state
+   * @param color
+   */
+  public void setDisabledUnderlineColor(int color) {
+    this.disabledUnderlineColor = color;
+    postInvalidate();
+  }
+
   public CharSequence getFloatingLabelText() {
     return floatingLabelText;
   }
