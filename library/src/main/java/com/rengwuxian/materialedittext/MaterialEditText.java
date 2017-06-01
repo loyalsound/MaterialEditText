@@ -1480,7 +1480,7 @@ public class MaterialEditText extends AppCompatEditText {
       textPaint.setTextSize(floatingLabelTextSize);
       // calculate the text color
       Integer floatingLabelColor = (Integer) focusEvaluator.evaluate(focusFraction * (isEnabled() ? 1 : 0), floatingLabelTextColor != NO_COLOR ? floatingLabelTextColor : (baseColor & 0x00ffffff | 0x44000000), primaryColor);
-      textPaint.setColor(tempErrorText != null ? errorColor : floatingLabelColor);
+      textPaint.setColor(floatingLabelColor);
 
       // calculate the horizontal position
       float floatingLabelWidth = textPaint.measureText(floatingLabelText.toString());
