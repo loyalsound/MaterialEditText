@@ -20,6 +20,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.graphics.drawable.DrawableCompat;
+import android.support.v7.content.res.AppCompatResources;
 import android.support.v7.widget.AppCompatEditText;
 import android.text.Editable;
 import android.text.Layout;
@@ -466,7 +467,7 @@ public class MaterialEditText extends AppCompatEditText {
     clearValidationErrorOnFocusGain = typedArray.getBoolean(R.styleable.MaterialEditText_met_clearValidationErrorOnFocusGain, false);
     @DrawableRes int errorIconResId = typedArray.getResourceId(R.styleable.MaterialEditText_met_errorIcon, -1);
     if (errorIconResId != -1) {
-      errorIconDrawable = DrawableCompat.wrap(ContextCompat.getDrawable(context, errorIconResId));
+      errorIconDrawable = DrawableCompat.wrap(AppCompatResources.getDrawable(context, errorIconResId));
       DrawableCompat.setTint(errorIconDrawable, errorColor);
     }
     checkCharactersCountAtBeginning = typedArray.getBoolean(R.styleable.MaterialEditText_met_checkCharactersCountAtBeginning, true);
