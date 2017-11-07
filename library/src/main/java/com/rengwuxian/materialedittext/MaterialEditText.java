@@ -174,6 +174,11 @@ public class MaterialEditText extends AppCompatEditText {
   private int errorColor;
 
   /**
+   * indicates whether bottom (error or helper) text should be always centered
+   */
+  private boolean bottomTextAlwaysCentered;
+
+  /**
    * min characters count limit. 0 means no limit. default is 0. NOTE: the character counter will increase the View's height.
    */
   private int minCharacters;
@@ -441,6 +446,7 @@ public class MaterialEditText extends AppCompatEditText {
     errorColor = typedArray.getColor(R.styleable.MaterialEditText_met_errorColor, Color.parseColor("#e7492E"));
     minCharacters = typedArray.getInt(R.styleable.MaterialEditText_met_minCharacters, 0);
     maxCharacters = typedArray.getInt(R.styleable.MaterialEditText_met_maxCharacters, 0);
+    bottomTextAlwaysCentered = typedArray.getBoolean(R.styleable.MaterialEditText_met_bottomTextAlwaysCentered, false);
     singleLineEllipsis = typedArray.getBoolean(R.styleable.MaterialEditText_met_singleLineEllipsis, false);
     helperText = typedArray.getString(R.styleable.MaterialEditText_met_helperText);
     helperTextColor = typedArray.getColor(R.styleable.MaterialEditText_met_helperTextColor, NO_COLOR);
@@ -924,7 +930,8 @@ public class MaterialEditText extends AppCompatEditText {
     int destBottomLines;
     textPaint.setTextSize(bottomTextSize);
     if (tempErrorText != null || helperText != null) {
-      Layout.Alignment alignment = (getGravity() & Gravity.RIGHT) == Gravity.RIGHT || isRTL() ?
+      Layout.Alignment alignment = bottomTextAlwaysCentered ? Layout.Alignment.ALIGN_CENTER :
+          (getGravity() & Gravity.RIGHT) == Gravity.RIGHT || isRTL() ?
           Layout.Alignment.ALIGN_OPPOSITE : (getGravity() & Gravity.LEFT) == Gravity.LEFT ?
           Layout.Alignment.ALIGN_NORMAL : Layout.Alignment.ALIGN_CENTER;
       textLayout = new StaticLayout(tempErrorText != null ? tempErrorText : helperText, textPaint, getWidth() - getBottomTextLeftOffset() - getBottomTextRightOffset() - getPaddingLeft() - getPaddingRight(), alignment, 1.0f, 0.0f, true);

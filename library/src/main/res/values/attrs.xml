@@ -13,6 +13,8 @@
     </attr>
     <!-- The color for when something is wrong.(e.g. exceeding max characters) -->
     <attr name="met_errorColor" format="color" />
+    <!-- Indicates whether bottom (error or helper) text should be always centered -->
+    <attr name="met_bottomTextAlwaysCentered" format="boolean" />
     <!-- Min characters count limit. 0 means no limit. -->
     <attr name="met_minCharacters" format="integer" />
     <!-- max Characters count limit. 0 means no limit. -->

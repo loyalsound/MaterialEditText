@@ -328,6 +328,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="Custom Colors"
+        app:met_bottomTextAlwaysCentered="true"
         app:met_floatingLabel="normal"
         app:met_helperText="Helper Text"
         app:met_maxCharacters="5"
