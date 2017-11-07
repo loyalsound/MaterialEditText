@@ -57,6 +57,12 @@
     <attr name="met_floatingLabelTextSize" format="dimension" />
     <!-- The floating label's text color. -1 by default. -->
     <attr name="met_floatingLabelTextColor" format="color" />
+    <!-- The floating label's text color in focused state. -1 by default. -->
+    <attr name="met_focusFloatingLabelTextColor" format="color"/>
+    <!-- The floating label's text color in disabled state. -1 by default. -->
+    <attr name="met_disabledFloatingLabelTextColor" format="color"/>
+    <!-- The floating label's text color in error state. -1 by default. -->
+    <attr name="met_errorFloatingLabelTextColor" format="color"/>
     <!-- The bottom texts' size. 12sp by default. -->
     <attr name="met_bottomTextSize" format="dimension" />
     <!-- Always show the floating label, instead of animating it in/out. False by default. -->

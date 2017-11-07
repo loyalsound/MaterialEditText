@@ -99,6 +99,21 @@ public class MaterialEditText extends AppCompatEditText {
   private int floatingLabelTextColor;
 
   /**
+   * the floating label's color in focused state
+   */
+  private int focusFloatingLabelTextColor;
+
+  /**
+   * the floating label's color in error state
+   */
+  private int errorFloatingLabelTextColor;
+
+  /**
+   * the floating label's color in disabled state
+   */
+  private int disabledFloatingLabelTextColor;
+
+  /**
    * the bottom texts' size.
    */
   private int bottomTextSize;
@@ -461,6 +476,9 @@ public class MaterialEditText extends AppCompatEditText {
     floatingLabelPadding = typedArray.getDimensionPixelSize(R.styleable.MaterialEditText_met_floatingLabelPadding, bottomSpacing);
     floatingLabelTextSize = typedArray.getDimensionPixelSize(R.styleable.MaterialEditText_met_floatingLabelTextSize, getResources().getDimensionPixelSize(R.dimen.floating_label_text_size));
     floatingLabelTextColor = typedArray.getColor(R.styleable.MaterialEditText_met_floatingLabelTextColor, NO_COLOR);
+    focusFloatingLabelTextColor = typedArray.getColor(R.styleable.MaterialEditText_met_focusFloatingLabelTextColor, NO_COLOR);
+    errorFloatingLabelTextColor = typedArray.getColor(R.styleable.MaterialEditText_met_errorFloatingLabelTextColor, NO_COLOR);
+    disabledFloatingLabelTextColor = typedArray.getColor(R.styleable.MaterialEditText_met_disabledFloatingLabelTextColor, NO_COLOR);
     floatingLabelAnimating = typedArray.getBoolean(R.styleable.MaterialEditText_met_floatingLabelAnimating, true);
     bottomTextSize = typedArray.getDimensionPixelSize(R.styleable.MaterialEditText_met_bottomTextSize, getResources().getDimensionPixelSize(R.dimen.bottom_text_size));
     hideUnderline = typedArray.getBoolean(R.styleable.MaterialEditText_met_hideUnderline, false);
@@ -1493,8 +1511,21 @@ public class MaterialEditText extends AppCompatEditText {
     // draw the floating label
     if (floatingLabelEnabled && !TextUtils.isEmpty(floatingLabelText)) {
       textPaint.setTextSize(floatingLabelTextSize);
+
+      Integer floatingLabelFallbackTextColor = floatingLabelTextColor != NO_COLOR ? floatingLabelTextColor : (baseColor & 0x00ffffff | 0x44000000);
+      Integer startFloatingLabelColor;
+      if (!isInternalValid()) { // not valid
+          startFloatingLabelColor = errorFloatingLabelTextColor != NO_COLOR ? errorFloatingLabelTextColor : floatingLabelFallbackTextColor;
+      } else if (!isEnabled()) { // disabled
+        startFloatingLabelColor = disabledFloatingLabelTextColor != NO_COLOR ? disabledFloatingLabelTextColor : floatingLabelFallbackTextColor;
+      } else if (hasFocus()) { // focused
+        startFloatingLabelColor = focusFloatingLabelTextColor != NO_COLOR ? focusFloatingLabelTextColor : floatingLabelFallbackTextColor;
+      } else { // normal
+        startFloatingLabelColor = floatingLabelFallbackTextColor;
+      }
+
       // calculate the text color
-      Integer floatingLabelColor = (Integer) focusEvaluator.evaluate(focusFraction * (isEnabled() ? 1 : 0), floatingLabelTextColor != NO_COLOR ? floatingLabelTextColor : (baseColor & 0x00ffffff | 0x44000000), primaryColor);
+      Integer floatingLabelColor = (Integer) focusEvaluator.evaluate(focusFraction * (isEnabled() ? 1 : 0), startFloatingLabelColor, primaryColor);
       textPaint.setColor(floatingLabelColor);
 
       // calculate the horizontal position
