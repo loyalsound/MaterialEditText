@@ -337,8 +337,14 @@
         app:met_textColorHint="#33ff0000"
         app:met_errorColor="#ddaa00"
         app:met_helperTextColor="#795548"
-        app:met_underlineColor="#003587"
-        app:met_floatingLabelTextColor="#8805ad"/>
+        app:met_underlineColor="#ab444444"
+        app:met_disabledUnderlineColor="#ab444444"
+        app:met_errorUnderlineColor="#ddaa00"
+        app:met_focusUnderlineColor="#4830fe"
+        app:met_disabledFloatingLabelTextColor="#ab444444"
+        app:met_errorFloatingLabelTextColor="#ddaa00"
+        app:met_focusFloatingLabelTextColor="#4830fe"
+        app:met_floatingLabelTextColor="#ab444444"/>
 
       <TextView
         android:layout_width="match_parent"
