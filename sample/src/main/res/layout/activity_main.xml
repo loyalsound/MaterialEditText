@@ -366,6 +366,31 @@
         app:met_maxCharacters="5" />
 
       <TextView
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:layout_marginTop="16dp"
+          android:text="Custom Font Family:"
+          android:textColor="#333333"
+          android:textSize="14sp" />
+
+      <TextView
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:text="app:met_fontFamily=&quot;@font/roboto_condensed_italic&quot;\napp:met_accentFontFamily=&quot;@font/roboto_condensed_italic&quot;"
+          android:textColor="#888888"
+          android:textSize="14sp" />
+
+      <com.rengwuxian.materialedittext.MaterialEditText
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:hint="Custom Accent Font Family"
+          app:met_fontFamily="@font/roboto_condensed_italic"
+          app:met_accentFontFamily="@font/roboto_condensed_italic"
+          app:met_floatingLabel="normal"
+          app:met_helperText="Helper Text"
+          app:met_maxCharacters="5" />
+
+      <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"

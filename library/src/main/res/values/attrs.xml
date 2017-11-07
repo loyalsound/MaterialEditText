@@ -25,8 +25,12 @@
     <attr name="met_helperText" format="string" />
     <!-- Helper text color -->
     <attr name="met_helperTextColor" format="color" />
+    <!--  Font of the paint used to draw accent texts using android compat -->
+    <attr name="met_accentFontFamily" format="reference" />
     <!-- Font of the paint used to draw accent texts -->
     <attr name="met_accentTypeface" format="string" />
+    <!-- Font used on view using android compat -->
+    <attr name="met_fontFamily" format="reference" />
     <!-- Font used on view -->
     <attr name="met_typeface" format="string" />
     <!-- Custom float label text -->

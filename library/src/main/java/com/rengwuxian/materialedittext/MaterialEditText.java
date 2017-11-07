@@ -15,10 +15,11 @@ import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.support.annotation.DrawableRes;
+import android.support.annotation.FontRes;
 import android.support.annotation.IntDef;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.v4.content.ContextCompat;
+import android.support.v4.content.res.ResourcesCompat;
 import android.support.v4.graphics.drawable.DrawableCompat;
 import android.support.v7.content.res.AppCompatResources;
 import android.support.v7.widget.AppCompatEditText;
@@ -429,14 +430,28 @@ public class MaterialEditText extends AppCompatEditText {
     helperText = typedArray.getString(R.styleable.MaterialEditText_met_helperText);
     helperTextColor = typedArray.getColor(R.styleable.MaterialEditText_met_helperTextColor, NO_COLOR);
     minBottomTextLines = typedArray.getInt(R.styleable.MaterialEditText_met_minBottomTextLines, 0);
-    String fontPathForAccent = typedArray.getString(R.styleable.MaterialEditText_met_accentTypeface);
-    if (fontPathForAccent != null && !isInEditMode()) {
-      accentTypeface = getCustomTypeface(fontPathForAccent);
+    @FontRes int accentFontFamilyResId = typedArray.getResourceId(R.styleable.MaterialEditText_met_accentFontFamily, -1);
+    if (accentFontFamilyResId == -1) {
+      String fontPathForAccent = typedArray.getString(R.styleable.MaterialEditText_met_accentTypeface);
+      if (fontPathForAccent != null && !isInEditMode()) {
+        accentTypeface = getCustomTypeface(fontPathForAccent);
+        textPaint.setTypeface(accentTypeface);
+      }
+    }
+    else {
+      accentTypeface = ResourcesCompat.getFont(context, accentFontFamilyResId);
       textPaint.setTypeface(accentTypeface);
     }
-    String fontPathForView = typedArray.getString(R.styleable.MaterialEditText_met_typeface);
-    if (fontPathForView != null && !isInEditMode()) {
-      typeface = getCustomTypeface(fontPathForView);
+    @FontRes int fontFamilyResId = typedArray.getResourceId(R.styleable.MaterialEditText_met_fontFamily, -1);
+    if (fontFamilyResId == -1) {
+      String fontPathForView = typedArray.getString(R.styleable.MaterialEditText_met_typeface);
+      if (fontPathForView != null && !isInEditMode()) {
+        typeface = getCustomTypeface(fontPathForView);
+        setTypeface(typeface);
+      }
+    }
+    else {
+      typeface = ResourcesCompat.getFont(context, fontFamilyResId);
       setTypeface(typeface);
     }
     floatingLabelText = typedArray.getString(R.styleable.MaterialEditText_met_floatingLabelText);
